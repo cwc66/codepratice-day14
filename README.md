@@ -558,50 +558,48 @@ public:
 重点也是，区间以及更新的部分。
 
 第二道题，晚一点再写。
-[螺旋矩阵Ⅱ](https://leetcode.cn/problems/spiral-matrix-ii/description/)
+[螺旋矩阵](https://leetcode.cn/problems/spiral-matrix/description/)
 给你一个 m 行 n 列的矩阵 matrix ，请按照 顺时针螺旋顺序 ，返回矩阵中的所有元素。
 ```CPP
 class Solution {
 public:
-    vector<vector<int>> generateMatrix(int n) {
-        vector<vector<int>> res(n,vector<int>(n,0));
-        int startx=0,starty=0;
-        int loop=n/2;
-        int mid=n/2;
-        int offset=1;
-        int count=1;
-        int i,j;
-        while(loop--)
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        if(matrix.size()==0 || matrix[0].size()==0)
         {
-            i=startx;
-            j=starty;
-            for(;j<n-offset;j++)
-            {
-                res[i][j]=count++;
-            }
-            for(;i<n-offset;i++)
-            {
-                res[i][j]=count++;
-            }
-            for(;j>starty;j--)
-            {
-                res[i][j]=count++;
-            }
-            for(;i>startx;i--)
-            {
-                res[i][j]=count++;
-            }
-
-            startx++;
-            starty++;
-
-            offset++;
+            return {};
         }
-        if(n%2)
+
+        int rows=matrix.size(), columns=matrix[0].size();
+        vector<int> order;
+        int left=0,right=columns-1,top=0,bottom=rows-1;
+        while(left<=right && top<=bottom)
         {
-            res[mid][mid]=count;
+            for(int column=left;column<=right;column++)
+            {
+                order.push_back(matrix[top][column]);
+            }
+            for(int row=top+1;row<=bottom;row++)
+            {
+                order.push_back(matrix[row][right]);
+            }
+            if(left<right && top<bottom)
+            {
+                for(int column=right-1;column>left;column--)
+                {
+                    order.push_back(matrix[bottom][column]);
+                }
+                for(int row=bottom;row>top;row--)
+                {
+                    order.push_back(matrix[row][left]);
+                }
+            }
+            left++;
+            right--;
+            top++;
+            bottom--;
         }
-        return res;
+        
+        return order;
     }
 };
 

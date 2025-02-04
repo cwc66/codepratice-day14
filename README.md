@@ -563,43 +563,45 @@ public:
 ```CPP
 class Solution {
 public:
-    vector<int> spiralOrder(vector<vector<int>>& matrix) {
-        if(matrix.size()==0 || matrix[0].size()==0)
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> res(n,vector<int>(n,0));
+        int startx=0,starty=0;
+        int loop=n/2;
+        int mid=n/2;
+        int offset=1;
+        int count=1;
+        int i,j;
+        while(loop--)
         {
-            return {};
-        }
+            i=startx;
+            j=starty;
+            for(;j<n-offset;j++)
+            {
+                res[i][j]=count++;
+            }
+            for(;i<n-offset;i++)
+            {
+                res[i][j]=count++;
+            }
+            for(;j>starty;j--)
+            {
+                res[i][j]=count++;
+            }
+            for(;i>startx;i--)
+            {
+                res[i][j]=count++;
+            }
 
-        int rows=matrix.size(), columns=matrix[0].size();
-        vector<int> order;
-        int left=0,right=columns-1,top=0,bottom=rows-1;
-        while(left<=right && top<=bottom)
-        {
-            for(int column=left;column<=right;column++)
-            {
-                order.push_back(matrix[top][column]);
-            }
-            for(int row=top+1;row<=bottom;row++)
-            {
-                order.push_back(matrix[row][right]);
-            }
-            if(left<right && top<bottom)
-            {
-                for(int column=right-1;column>left;column--)
-                {
-                    order.push_back(matrix[bottom][column]);
-                }
-                for(int row=bottom;row>top;row--)
-                {
-                    order.push_back(matrix[row][left]);
-                }
-            }
-            left++;
-            right--;
-            top++;
-            bottom--;
+            startx++;
+            starty++;
+
+            offset++;
         }
-        
-        return order;
+        if(n%2)
+        {
+            res[mid][mid]=count;
+        }
+        return res;
     }
 };
 
